@@ -2,10 +2,13 @@ package com.example.popular_movies;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -28,6 +31,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private TextView mMoviesListTV;
+    private ListView listView = findViewById(R.id.moviesList_lv);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,20 @@ public class MainActivity extends AppCompatActivity {
         Log.d("searchURL", searchURL.toString());
         new MoviesList().execute(searchURL);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                launchDetailActivity(position);
+            }
+        });
+    }
+
+    private void launchDetailActivity(int position) {
+        Log.d("launchDetailActivity()", "launchDetailActivity(), position="+position);
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.EXTRA_POSITION, position);
+        Log.d("EXTRA_POSITOIN before", String.valueOf(position));
+        startActivity(intent);
     }
 
     public class MoviesList extends AsyncTask<URL, Void, String> {
@@ -121,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
                     BaseAdapter adapter = new Adapter(getApplicationContext(),
                             R.layout.movie_item,
                             titleArr, imageArr, aveVoteArr, voteCountArr);
-                    ListView listView = findViewById(R.id.moviesList_lv);
                     listView.setAdapter(adapter);
 
                 } catch (JSONException e){
@@ -130,5 +147,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 }

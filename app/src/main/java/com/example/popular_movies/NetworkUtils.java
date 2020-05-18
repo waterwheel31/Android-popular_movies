@@ -17,7 +17,7 @@ public class NetworkUtils {
 
     final static String BASE_URL = "https://api.themoviedb.org/3/trending/all/";
     final static String PARAM_QUERY = "api_key";
-    final static String API_KEY = "<YOURKEY>";
+    final static String API_KEY = "<YOURAPIKEY>";
 
 
     public static String getResponseFromHttpUrl(URL url) throws IOException{

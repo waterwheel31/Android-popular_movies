@@ -12,7 +12,10 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+
+
 public class Adapter extends BaseAdapter {
+
 
     private LayoutInflater inflater;
     private int layoutID;
@@ -20,6 +23,8 @@ public class Adapter extends BaseAdapter {
     private String[] voteCountArr;
     private String[] aveVoteArr;
     private String[] imageArr;
+    Context context;
+
 
     static String BASE_IMAGE_URL = "https://image.tmdb.org/t/p/original";
 
@@ -40,6 +45,7 @@ public class Adapter extends BaseAdapter {
         voteCountArr = vote_count;
         aveVoteArr = vote_average;
         imageArr = images;
+        this.context = context;
 
     }
 
@@ -65,7 +71,7 @@ public class Adapter extends BaseAdapter {
         holder.title.setText(titleArr[position]);
         holder.voteCount.setText("No of Votes: " + voteCountArr[position]);
         holder.averageVote.setText("Ave. of Votes: " + aveVoteArr[position] + "/ 10.0");
-        Picasso.with(this).load(BASE_IMAGE_URL+imageArr[position]).into(holder.image);
+        Picasso.with(context).load(BASE_IMAGE_URL+imageArr[position]).into(holder.image);
 
         return convertView;
     }
