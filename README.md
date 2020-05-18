@@ -3,4 +3,4 @@
 
 ## Setup 
 
-- Replace API_KEY with your TheMovieDataBase API in `NetworkUtils.java` (in app/src/main/java/com/example/popular_movie)
+- Replace API_KEY with your TheMovieDataBase API in `string.xml` (in app/src/main/res/values)

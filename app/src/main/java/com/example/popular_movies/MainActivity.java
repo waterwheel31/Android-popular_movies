@@ -1,6 +1,7 @@
 package com.example.popular_movies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setList(String BASE_URL){
         setContentView(R.layout.movie_list);
-        ListView listView = findViewById(R.id.moviesList_lv);
+        RecyclerView rView = (RecyclerView) findViewById(R.id.moviesList_lv);
 
         String API_KEY = getString(R.string.api_key);
 
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("searchURL", searchURL.toString());
         new MoviesList().execute(searchURL);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        rView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 launchDetailActivity(position);
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String results){
 
-            ListView listView = findViewById(R.id.moviesList_lv);
+            RecyclerView rView = (RecyclerView) findViewById(R.id.moviesList_lv);
 
             Log.d("onPostExecute", "initialized");
             Log.d("onPostExecute-results", results);
@@ -151,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                     BaseAdapter adapter = new Adapter(getBaseContext(),
                             R.layout.movie_item,
                             titleArr, imageArr, aveVoteArr, voteCountArr);
-                    listView.setAdapter(adapter);
+                    rView.setAdapter(adapter);
 
                 } catch (JSONException e){
                     e.printStackTrace();

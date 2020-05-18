@@ -10,12 +10,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.squareup.picasso.Picasso;
 
 
-
-public class Adapter extends BaseAdapter {
-
+public class Adapter extends RecyclerView.Adapter {
 
     private LayoutInflater inflater;
     private int layoutID;
@@ -27,7 +27,7 @@ public class Adapter extends BaseAdapter {
 
     static String BASE_IMAGE_URL = "https://image.tmdb.org/t/p/original";
 
-    static class ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView title;
         TextView voteCount;
