@@ -25,7 +25,6 @@ public class Adapter extends BaseAdapter {
     private String[] imageArr;
     Context context;
 
-
     static String BASE_IMAGE_URL = "https://image.tmdb.org/t/p/original";
 
     static class ViewHolder{

@@ -15,9 +15,10 @@ import java.util.Scanner;
 
 public class NetworkUtils {
 
-    final static String BASE_URL = "https://api.themoviedb.org/3/trending/all/";
+    //final static String BASE_URL = "https://api.themoviedb.org/3/trending/all/";
+    //final static String BASE_URL = "https://api.themoviedb.org/3/movie/popular";
     final static String PARAM_QUERY = "api_key";
-    final static String API_KEY = "<YOURAPIKEY>";
+    //final static String API_KEY = "dee677a378f19c354631c6802d9daa4c";
 
 
     public static String getResponseFromHttpUrl(URL url) throws IOException{
@@ -40,8 +41,8 @@ public class NetworkUtils {
         }
     }
 
-    public static URL buildUrl(String searchQuery){
-        Uri builtUri = Uri.parse(BASE_URL+searchQuery).buildUpon()
+    public static URL buildUrl(String BASE_URL, String API_KEY){
+        Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                 .appendQueryParameter(PARAM_QUERY, API_KEY)
                 .build();
 
