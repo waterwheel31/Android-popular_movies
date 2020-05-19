@@ -1,6 +1,7 @@
 package com.example.popular_movies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -57,12 +58,14 @@ public class MainActivity extends AppCompatActivity {
         Log.d("searchURL", searchURL.toString());
         new MoviesList().execute(searchURL);
 
-        rView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*
+        rView.OnItemTouchListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 launchDetailActivity(position);
             }
         });
+         */
     }
 
     private void launchDetailActivity(int position) {
@@ -80,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class MoviesList extends AsyncTask<URL, Void, String> {
+
+
 
         public MoviesList(){
             Log.d("MoviesList", "initialized");
@@ -103,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String results){
 
             RecyclerView rView = (RecyclerView) findViewById(R.id.moviesList_lv);
+
+            ArrayList<Movie> movies = new ArrayList<Movie>();
 
             Log.d("onPostExecute", "initialized");
             Log.d("onPostExecute-results", results);
@@ -129,30 +136,30 @@ public class MainActivity extends AppCompatActivity {
 
                         String combinedTitle = obj.optString("title") + obj.optString("name");
 
+
                         Map<String, String> item = new HashMap<String, String>();
                         item.put("name", combinedTitle);
                         item.put("image", obj.optString("backdrop_path"));
+                        Log.d("movie:", "checkpoint2");
 
-                        titleList.add(combinedTitle);
-                        voteCountList.add(obj.optString("vote_count"));
-                        aveVoteList.add(obj.optString("vote_average"));
-                        imageList.add(obj.optString("backdrop_path"));
+                        Movie movie = new Movie (
+                                obj.optString("id"),
+                                obj.optString("vote_count"),
+                                obj.optString("vote_average"),
+                                combinedTitle,
+                                obj.optString("release_date"),
+                                obj.optString("backdrop_path"),
+                                obj.optString("overview")
+                                );
+
+                        movies.add(movie);
+                        Log.d("movie:", "added");
+
                     }
 
-                    String[] titleArr = new String[titleList.size()];
-                    String[] aveVoteArr = new String[titleList.size()];
-                    String[] voteCountArr = new String[titleList.size()];
-                    String[] imageArr = new String[titleList.size()];
-
-                    titleArr = titleList.toArray(titleArr);
-                    aveVoteArr = aveVoteList.toArray(aveVoteArr);
-                    voteCountArr = voteCountList.toArray(voteCountArr);
-                    imageArr = imageList.toArray(imageArr);
-
-                    BaseAdapter adapter = new Adapter(getBaseContext(),
-                            R.layout.movie_item,
-                            titleArr, imageArr, aveVoteArr, voteCountArr);
+                    Adapter adapter = new Adapter(movies);
                     rView.setAdapter(adapter);
+                    rView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
 
                 } catch (JSONException e){
                     e.printStackTrace();

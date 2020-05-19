@@ -1,12 +1,10 @@
 package com.example.popular_movies;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,78 +12,70 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
 
-public class Adapter extends RecyclerView.Adapter {
 
-    private LayoutInflater inflater;
-    private int layoutID;
-    private String[] titleArr;
-    private String[] voteCountArr;
-    private String[] aveVoteArr;
-    private String[] imageArr;
-    Context context;
+public class Adapter extends
+        RecyclerView.Adapter<Adapter.ViewHolder> {
 
     static String BASE_IMAGE_URL = "https://image.tmdb.org/t/p/original";
+    private List<Movie> mMovies;
+    Context context;
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView image;
-        TextView title;
-        TextView voteCount;
-        TextView averageVote;
-    }
-
-    public Adapter(Context context, int itemLayoutId,
-                   String[] titles, String[] images,
-                   String[] vote_average, String[] vote_count){
-
-        inflater = LayoutInflater.from(context);
-        layoutID = itemLayoutId;
-        titleArr = titles;
-        voteCountArr = vote_count;
-        aveVoteArr = vote_average;
-        imageArr = images;
-        this.context = context;
-
+    public Adapter(List<Movie> movies){
+        mMovies = movies;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public Adapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        context = parent.getContext();
+        LayoutInflater infalter = LayoutInflater.from(context);
 
-        ViewHolder holder;
+        View contactView = infalter.inflate(R.layout.movie_item, parent, false);
 
-        if (convertView == null){
-            convertView = inflater.inflate(layoutID, null);
-            holder = new ViewHolder();
-            //holder.img = convertView.findViewById(R.id.listImage);
-            holder.title = convertView.findViewById(R.id.titleTV);
-            holder.voteCount = convertView.findViewById(R.id.voteCountTV);
-            holder.averageVote = convertView.findViewById(R.id.averageVoteTV);
-            holder.image = convertView.findViewById(R.id.listImageIV);
-            convertView.setTag((holder));
-        } else {
-            holder = (ViewHolder) convertView.getTag();
+        ViewHolder viewHolder = new ViewHolder(contactView);
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(Adapter.ViewHolder viewHolder, int position){
+        Movie movie = mMovies.get(position);
+
+        Log.d("movie-title:", movie.getTitle());
+        Log.d("movie-url:", BASE_IMAGE_URL+movie.getBackdrop_path());
+
+        ImageView imageIV = viewHolder.image;
+        Picasso.with(context).load(BASE_IMAGE_URL+movie.getBackdrop_path()).into(imageIV);
+
+        TextView titleTV = viewHolder.title;
+        titleTV.setText(movie.getTitle());
+
+        TextView voteCountTV = viewHolder.voteCount;
+        voteCountTV.setText(movie.getVote_count());
+
+        TextView averageVoteTV = viewHolder.averageVote;
+        averageVoteTV.setText(movie.getVote_average());
+
+
+    }
+    @Override
+    public int getItemCount() {
+        return mMovies.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public ImageView image;
+        public TextView title;
+        public TextView voteCount;
+        public TextView averageVote;
+
+        public ViewHolder(View itemView){
+            super(itemView);
+            image = (ImageView) itemView.findViewById(R.id.listImageIV);
+            title = (TextView) itemView.findViewById(R.id.titleTV);
+            voteCount = (TextView) itemView.findViewById(R.id.voteCountTV);
+            averageVote = (TextView) itemView.findViewById(R.id.averageVoteTV);
         }
-
-        //holder.img.setImageBitmap(imageList[position]);
-        holder.title.setText(titleArr[position]);
-        holder.voteCount.setText("No of Votes: " + voteCountArr[position]);
-        holder.averageVote.setText("Ave. of Votes: " + aveVoteArr[position] + "/ 10.0");
-        Picasso.with(context).load(BASE_IMAGE_URL+imageArr[position]).into(holder.image);
-
-        return convertView;
-    }
-
-    @Override
-    public int getCount() {
-        return titleArr.length;
-    }
-    @Override
-    public Object getItem(int position) {
-        return position;
-    }
-    @Override
-    public long getItemId(int position) {
-        return position;
     }
 
 }
