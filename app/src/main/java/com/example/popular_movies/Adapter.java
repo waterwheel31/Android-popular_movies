@@ -1,18 +1,26 @@
 package com.example.popular_movies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
+
+import static android.widget.Toast.LENGTH_SHORT;
 
 
 public class Adapter extends
@@ -38,7 +46,8 @@ public class Adapter extends
     }
 
     @Override
-    public void onBindViewHolder(Adapter.ViewHolder viewHolder, int position){
+    public void onBindViewHolder(Adapter.ViewHolder viewHolder, final int position){
+
         Movie movie = mMovies.get(position);
 
         Log.d("movie-title:", movie.getTitle());
@@ -55,6 +64,24 @@ public class Adapter extends
 
         TextView averageVoteTV = viewHolder.averageVote;
         averageVoteTV.setText(movie.getVote_average());
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DetailActivity.class);
+
+                JSONArray jsonArry = new JSONArray();
+                JSONObject obj = new JSONObject();
+                try {
+                    obj = jsonArry.getJSONObject(position);
+                }catch(JSONException e){
+                    e.printStackTrace();
+                }
+                intent.putExtra(DetailActivity.MOVIE_OBJECT, obj.toString());
+                Log.d("EXTRA_POSITOIN before", String.valueOf(position));
+                context.startActivity(intent);
+            }
+        });
 
 
     }
