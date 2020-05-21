@@ -4,5 +4,5 @@
     <string name="sort_by_votes">Sort by Votes</string>
     <string name="url_popular">https://api.themoviedb.org/3/movie/popular</string>
     <string name="url_top_rated">https://api.themoviedb.org/3/movie/top_rated</string>
-    <string name='api_key'>Your API </string>
+    <string name='api_key'>YOURAPIKEY</string>
 </resources>

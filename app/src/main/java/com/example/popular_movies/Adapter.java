@@ -2,6 +2,7 @@ package com.example.popular_movies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +49,7 @@ public class Adapter extends
     @Override
     public void onBindViewHolder(Adapter.ViewHolder viewHolder, final int position){
 
-        Movie movie = mMovies.get(position);
+        final Movie movie = mMovies.get(position);
 
         Log.d("movie-title:", movie.getTitle());
         Log.d("movie-url:", BASE_IMAGE_URL+movie.getBackdrop_path());
@@ -70,14 +71,7 @@ public class Adapter extends
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailActivity.class);
 
-                JSONArray jsonArry = new JSONArray();
-                JSONObject obj = new JSONObject();
-                try {
-                    obj = jsonArry.getJSONObject(position);
-                }catch(JSONException e){
-                    e.printStackTrace();
-                }
-                intent.putExtra(DetailActivity.MOVIE_OBJECT, obj.toString());
+                intent.putExtra(DetailActivity.MOVIE_OBJECT, movie);
                 Log.d("EXTRA_POSITOIN before", String.valueOf(position));
                 context.startActivity(intent);
             }

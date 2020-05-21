@@ -2,6 +2,7 @@ package com.example.popular_movies;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +14,8 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.Serializable;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -38,26 +41,10 @@ public class DetailActivity extends AppCompatActivity {
         imageIV = findViewById(R.id.image_iv);
 
         Intent intent = getIntent();
-        String obj = intent.getStringExtra(MOVIE_OBJECT);
-        Log.d("obj", obj);
+        //String obj = intent.getStringExtra(MOVIE_OBJECT);
+        Movie movie = (Movie) intent.getSerializableExtra(MOVIE_OBJECT);
 
-        try{
-            JSONObject jsonObj = new JSONObject(obj);
-
-            Movie movie = new Movie(
-                jsonObj.optString("id"),
-                jsonObj.optString("vote_count"),
-                jsonObj.optString("vote_average"),
-                jsonObj.optString("title") + jsonObj.optString("name"),
-                jsonObj.optString("release_date"),
-                jsonObj.optString("backdrop_path"),
-                jsonObj.optString("overview")
-             );
-
-            populateUI(movie);
-        }catch(JSONException e){
-            e.printStackTrace();
-        }
+        populateUI(movie);
 
     }
 

@@ -1,6 +1,7 @@
 package com.example.popular_movies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -159,7 +160,10 @@ public class MainActivity extends AppCompatActivity {
 
                     Adapter adapter = new Adapter(movies);
                     rView.setAdapter(adapter);
-                    rView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),2,LinearLayoutManager.VERTICAL,false);
+                    //rView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+                    rView.setLayoutManager(gridLayoutManager);
+
 
                 } catch (JSONException e){
                     e.printStackTrace();
